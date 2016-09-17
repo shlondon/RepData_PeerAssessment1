@@ -16,6 +16,12 @@ bd <- read.csv("data/activity.csv", stringsAsFactors = FALSE)
 bd$date <- as.Date(bd$date)
 ```
 
+You need to load the following packages:
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
 ## What is mean total number of steps taken per day?
 
 
