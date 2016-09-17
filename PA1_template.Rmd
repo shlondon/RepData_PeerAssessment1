@@ -44,7 +44,8 @@ ggplot(bd1, aes(total_numbers_steps)) + geom_histogram(bins = 9, fill="white",
 
 ```
 
-![histograma1][plot1.jpg]
+![histograma1](plot1.jpg)
+
 and the histogram is
 
 histograma1
