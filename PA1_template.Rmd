@@ -59,7 +59,7 @@ mean <- bd2[1]
 median <- bd2[2]
 ```
 
-And the mean and median of the total number of steps taken per day is **10766.19`** and **10765** steps respectively.
+And the mean and median of the total number of steps taken per day is **10766.19** and **10765** steps respectively.
 
 ## What is the average daily activity pattern?
 
@@ -83,6 +83,74 @@ hig_num_steps<- bd3[which.max(bd3$mean_steps_interval),] #hig_num_steps object c
 
 
 ## Imputing missing values
+
+```{r}
+totNA <- sum(is.na(bd$steps)) #This code
+#produces the follow answer
+```
+
+The total number of missin values is **2304**. This value is produced by the last code:
+
+
+I devise a strategy for filling in all of the missing values in the dataset bd. The strategy was fill NA values with median number of steps taken per 5-minute interval because the mean is far from median. To achieve this objective, I have created fillNA function that allow filling missing values in bd data set and creating a new dataset that is equal to the original dataset but with the missing data filled in. The follow code show the strategy:
+
+```{r}
+#You need load dplyr and ggplot2 packages
+
+#bd4 <- group_by(bd, interval) %>% summarize(mean_interval = mean(steps, na.rm=TRUE), median_interval = median(steps, na.rm = TRUE))
+
+#Below plot show that there is a huge difference between mean and median, so
+# in this case is better choose median.
+#ggplot(bd4, aes(interval)) + geom_line(aes(y=mean_interval, colour="mean_interval")) + geom_line(aes(y=median_interval, colour="median_interval"))
+
+#fillNA function allow fill missing values in bd data set. bd4 data set is so important to fillNA performance
+fillNA <- function(dataset){
+        bd4 <- group_by(bd, interval) %>% summarize(mean_interval = mean(steps, na.rm=TRUE), median_interval = median(steps, na.rm = TRUE))
+        
+        bd4 <- as.data.frame(bd4)
+        
+        for (i in 1:dim(dataset)[1]) {
+        if(is.na(dataset$steps[i])){
+                dataset$steps[i] <- bd4[bd4$interval==dataset$interval[i],3]
+        }
+        }
+        dataset
+}
+
+#Copy the data without NA
+bdfill <- fillNA(bd) 
+
+```
+
+
+Below the code that produce the histogram of the total number of steps taken each day with dataset without NA´s
+
+```{r}
+#You need load dplyr and ggplot2 packages
+bd5 <- group_by(bdfill, date) %>% summarize(total_numbers_steps = sum(steps))
+
+ggplot(bd5, aes(total_numbers_steps)) + geom_histogram(bins = 9, fill="white",
+                                                       colour="black") +
+        ggtitle("Total number of steps taken each day") +
+        ylab("Frecuency") + xlab("Number of steps")
+        
+```
+
+The new histogram is:
+
+![histogram2](figures/plot3.jpg)
+
+Below the code that produce the Mean and median total number of steps taken per day with dataset without NA´s
+
+```{r}
+bd6 <- summarize(bd5, mean_total = mean(total_numbers_steps),
+                 median_total = median(total_numbers_steps))
+
+meanFill <- bd6[1]
+medianFill <- bd6[2]
+```
+
+The mean and median of the total number of steps taken per day with dataset without NA´s is **9503.869** and **10395** steps respectively. There is difference betweeen first and second part, specifically in the average. For the first part mean was **10766.19**, more than a thousand step difference, this reflect the importance of 0 steps in the distribuction.
 
 
 
