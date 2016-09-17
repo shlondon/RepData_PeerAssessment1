@@ -49,9 +49,17 @@ and the histogram is
 ![histograma1](plot1.jpg)
 
 
+Mean and median of the total number of steps taken per day is produced by this code:
+```{r}
+#You need load dplyr package
 
+bd2 <- summarize(bd1,mean_total = mean(total_numbers_steps, na.rm = TRUE), median_total = median(total_numbers_steps, na.rm = TRUE))
+bd2 <- as.data.frame(bd2)
+mean <- bd2[1]
+median <- bd2[2]
+```
 
-
+And the mean and median of the total number of steps taken per day is **`r mean`** and **`r median`** respectively.
 
 ## What is the average daily activity pattern?
 
