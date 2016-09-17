@@ -59,10 +59,26 @@ mean <- bd2[1]
 median <- bd2[2]
 ```
 
-And the mean and median of the total number of steps taken per day is **`r mean`** and **`r median`** respectively.
+And the mean and median of the total number of steps taken per day is **10766.19`** and **10765** steps respectively.
 
 ## What is the average daily activity pattern?
 
+The Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days is produced by this code:
+
+```{r}
+#You need load dplyr and ggplot2 packages
+
+bd3 <- group_by(bd, interval) %>% summarize(mean_steps_interval = mean(steps, na.rm = TRUE))
+ggplot(bd3, aes(x=interval, y=mean_steps_interval)) + geom_line() +
+        ggtitle("Average number of steps taken per 5-minute interval") +
+        ylab("Average number of steps") + xlab("5-minute interval")
+
+hig_num_steps<- bd3[which.max(bd3$mean_steps_interval),] #This code
+#produce the follow answer
+        
+```
+
+`r hig_num_steps[1]` is 5-minute interval with the maximum average numbers of steps, it's iqual to  **`r hig_num_steps[2]`**.
 
 
 ## Imputing missing values
