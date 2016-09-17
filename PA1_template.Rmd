@@ -31,18 +31,25 @@ code do it:
 
 bd1 <- group_by(bd, date) %>% summarize(total_numbers_steps=sum(steps))
 bd1 <- as.data.frame(bd1)
-bd1
 ```
 
 The Histogram of the total number of steps taken each day is produced by the follow code:
 ```{r}
 #library(ggplot2) My favorite plot system
-
 ggplot(bd1, aes(total_numbers_steps)) + geom_histogram(bins = 9, fill="white",
                                                        colour="black") +
         ggtitle("Total number of steps taken each day") +
         ylab("Frecuency") + xlab("Number of steps")
+
+
 ```
+
+![histograma1][plot1.jpg]
+and the histogram is
+
+histograma1
+
+
 
 ## What is the average daily activity pattern?
 
