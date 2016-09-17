@@ -155,3 +155,43 @@ The mean and median of the total number of steps taken per day with dataset with
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+The follow code allows to create a new dataset with a new factor variable with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day:
+
+```{r}
+
+newFactor <- function(dataset){
+weekdays <- c("lunes", "martes", "miércoles", "jueves", "viernes")
+weekends <- c("sábado", "domingo")
+dataset$week1 <- weekdays(dataset$date)
+
+for (j in 1:dim(dataset)[1]) {
+        if((dataset$week1[j] %in% weekdays) | dataset$week1[j] == "miércoles"){
+                dataset$week[j] <- "weekday"
+        }else{
+                dataset$week[j] <- "weekend"
+        }
+}
+dataset
+} #This function create new dataset with factor variable requested.
+
+bd7 <- newFactor(bd)
+        
+```
+
+The below code makes a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+
+```{r}
+#You need load dplyr and ggplot2 packages
+bd8 <- group_by(bd7, interval, week) %>% summarize(mean_steps_interval = mean(steps, na.rm = TRUE))
+ggplot(bd8, aes(x=interval, y=mean_steps_interval)) + geom_line() +
+        facet_grid(week ~ .) +
+        ggtitle("Average number of steps taken per 5-minute interval and per week") +
+        ylab("Average number of steps") + xlab("5-minute interval")
+
+```
+
+This below plot show that the participant tended to stand in one place when they are working, so the average numbers of steps was lower than the average numbers of steps walked at weekends leisure.
+
+![TimeSeries2](figures/plot4.jpg)
+
