@@ -24,7 +24,25 @@ library(ggplot2)
 
 ## What is mean total number of steps taken per day?
 
+I calculate the total number of steps taken per day into bd1, the follow  
+code do it:
+```{r}
+#library(dplyr) For calculate the total number of steps by day
 
+bd1 <- group_by(bd, date) %>% summarize(total_numbers_steps=sum(steps))
+bd1 <- as.data.frame(bd1)
+bd1
+```
+
+The Histogram of the total number of steps taken each day is produced by the follow code:
+```{r}
+#library(ggplot2) My favorite plot system
+
+ggplot(bd1, aes(total_numbers_steps)) + geom_histogram(bins = 9, fill="white",
+                                                       colour="black") +
+        ggtitle("Total number of steps taken each day") +
+        ylab("Frecuency") + xlab("Number of steps")
+```
 
 ## What is the average daily activity pattern?
 
