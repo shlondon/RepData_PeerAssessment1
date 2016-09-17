@@ -1,32 +1,46 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
-Load date into bd  and transform interval variable in appropiated format, it´s transformed in date class.
+Load date into bd  and transform interval variable in appropiated format, itÂ´s transformed in date class.
 
-```{r}
+
+```r
 bd <- read.csv("data/activity.csv", stringsAsFactors = FALSE)
 
 bd$date <- as.Date(bd$date)
 ```
 
 You need to load the following packages:
-```{r, echo=FALSE}
-library(dplyr)
-library(ggplot2)
+
+```
+## Warning: package 'dplyr' was built under R version 3.3.1
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
 ```
 
 ## What is mean total number of steps taken per day?
 
 I calculate the total number of steps taken per day into bd1, the follow  
 code do it:
-```{r}
+
+```r
 #library(dplyr) For calculate the total number of steps by day
 
 bd1 <- group_by(bd, date) %>% summarize(total_numbers_steps=sum(steps))
@@ -34,14 +48,13 @@ bd1 <- as.data.frame(bd1)
 ```
 
 The Histogram of the total number of steps taken each day is produced by the follow code:
-```{r}
+
+```r
 #library(ggplot2) My favorite plot system
 plot1 <- ggplot(bd1, aes(total_numbers_steps)) + geom_histogram(bins = 9, fill="white",
                                                        colour="black") +
         ggtitle("Total number of steps taken each day") +
         ylab("Frecuency") + xlab("Number of steps")
-
-
 ```
 
 and the histogram is
@@ -50,7 +63,8 @@ and the histogram is
 
 
 Mean and median of the total number of steps taken per day is produced by this code:
-```{r}
+
+```r
 #You need load dplyr package
 
 bd2 <- summarize(bd1,mean_total = mean(total_numbers_steps, na.rm = TRUE), median_total = median(total_numbers_steps, na.rm = TRUE))
@@ -65,7 +79,8 @@ And the mean and median of the total number of steps taken per day is **10766.19
 
 The Time series plot of the 5-minute interval and the average number of steps taken, averaged across all days is produced by this code:
 
-```{r}
+
+```r
 #You need load dplyr and ggplot2 packages
 
 bd3 <- group_by(bd, interval) %>% summarize(mean_steps_interval = mean(steps, na.rm = TRUE))
@@ -74,7 +89,6 @@ plot2 <- ggplot(bd3, aes(x=interval, y=mean_steps_interval)) + geom_line() +
         ylab("Average number of steps") + xlab("5-minute interval")
 
 hig_num_steps<- bd3[which.max(bd3$mean_steps_interval),] #hig_num_steps object contains the following answer
-        
 ```
 
 ![TimeSerie1](figures/plot2.jpg)
@@ -84,7 +98,8 @@ hig_num_steps<- bd3[which.max(bd3$mean_steps_interval),] #hig_num_steps object c
 
 ## Imputing missing values
 
-```{r}
+
+```r
 totNA <- sum(is.na(bd$steps)) #This code
 #produces the follow answer
 ```
@@ -94,7 +109,8 @@ The total number of missin values is **2304**. This value is produced by the las
 
 I devise a strategy for filling in all of the missing values in the dataset bd. The strategy was fill NA values with median number of steps taken per 5-minute interval because the mean is far from median. To achieve this objective, I have created fillNA function that allow filling missing values in bd data set and creating a new dataset that is equal to the original dataset but with the missing data filled in. The follow code show the strategy:
 
-```{r}
+
+```r
 #You need load dplyr and ggplot2 packages
 
 #bd4 <- group_by(bd, interval) %>% summarize(mean_interval = mean(steps, na.rm=TRUE), median_interval = median(steps, na.rm = TRUE))
@@ -119,13 +135,13 @@ fillNA <- function(dataset){
 
 #Copy the data without NA
 bdfill <- fillNA(bd) 
-
 ```
 
 
-Below the code that produce the histogram of the total number of steps taken each day with dataset without NA´s
+Below the code that produce the histogram of the total number of steps taken each day with dataset without NAÂ´s
 
-```{r}
+
+```r
 #You need load dplyr and ggplot2 packages
 bd5 <- group_by(bdfill, date) %>% summarize(total_numbers_steps = sum(steps))
 
@@ -133,16 +149,16 @@ plot3 <- ggplot(bd5, aes(total_numbers_steps)) + geom_histogram(bins = 9, fill="
                                                        colour="black") +
         ggtitle("Total number of steps taken each day") +
         ylab("Frecuency") + xlab("Number of steps")
-        
 ```
 
 The new histogram is:
 
 ![histogram2](figures/plot3.jpg)
 
-Below the code that produce the Mean and median total number of steps taken per day with dataset without NA´s
+Below the code that produce the Mean and median total number of steps taken per day with dataset without NAÂ´s
 
-```{r}
+
+```r
 bd6 <- summarize(bd5, mean_total = mean(total_numbers_steps),
                  median_total = median(total_numbers_steps))
 
@@ -150,7 +166,7 @@ meanFill <- bd6[1]
 medianFill <- bd6[2]
 ```
 
-The mean and median of the total number of steps taken per day with dataset without NA´s is **9503.869** and **10395** steps respectively. There is difference betweeen first and second part, specifically in the average. For the first part mean was **10766.19**, more than a thousand step difference, this reflect the importance of 0 steps in the distribuction.
+The mean and median of the total number of steps taken per day with dataset without NAÂ´s is **9503.869** and **10395** steps respectively. There is difference betweeen first and second part, specifically in the average. For the first part mean was **10766.19**, more than a thousand step difference, this reflect the importance of 0 steps in the distribuction.
 
 
 
@@ -158,15 +174,15 @@ The mean and median of the total number of steps taken per day with dataset with
 
 The follow code allows to create a new dataset with a new factor variable with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day:
 
-```{r}
 
+```r
 newFactor <- function(dataset){
-weekdays <- c("lunes", "martes", "miércoles", "jueves", "viernes")
-weekends <- c("sábado", "domingo")
+weekdays <- c("lunes", "martes", "miÃ©rcoles", "jueves", "viernes")
+weekends <- c("sÃ¡bado", "domingo")
 dataset$week1 <- weekdays(dataset$date)
 
 for (j in 1:dim(dataset)[1]) {
-        if((dataset$week1[j] %in% weekdays) | dataset$week1[j] == "miércoles"){
+        if((dataset$week1[j] %in% weekdays) | dataset$week1[j] == "miÃ©rcoles"){
                 dataset$week[j] <- "weekday"
         }else{
                 dataset$week[j] <- "weekend"
@@ -176,19 +192,18 @@ dataset
 } #This function create new dataset with factor variable requested.
 
 bd7 <- newFactor(bd)
-        
 ```
 
 The below code makes a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 
-```{r}
+
+```r
 #You need load dplyr and ggplot2 packages
 bd8 <- group_by(bd7, interval, week) %>% summarize(mean_steps_interval = mean(steps, na.rm = TRUE))
 plot4 <- ggplot(bd8, aes(x=interval, y=mean_steps_interval)) + geom_line() +
         facet_grid(week ~ .) +
         ggtitle("Average number of steps taken per 5-minute interval and per week") +
         ylab("Average number of steps") + xlab("5-minute interval")
-
 ```
 
 This below plot show that the participant tended to stand in one place when they are working, so the average numbers of steps was lower than the average numbers of steps walked at weekends leisure.
