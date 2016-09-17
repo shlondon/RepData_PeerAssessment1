@@ -8,7 +8,13 @@ output:
 
 ## Loading and preprocessing the data
 
+Load date into bd  and transform interval variable in appropiated format, it´s transformed in date class.
 
+```{r}
+bd <- read.csv("data/activity.csv", stringsAsFactors = FALSE)
+
+bd$date <- as.Date(bd$date)
+```
 
 ## What is mean total number of steps taken per day?
 
