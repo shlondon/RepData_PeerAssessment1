@@ -46,7 +46,7 @@ ggplot(bd1, aes(total_numbers_steps)) + geom_histogram(bins = 9, fill="white",
 
 and the histogram is
 
-![histograma1](plot1.jpg)
+![histograma1](figures/plot1.jpg)
 
 
 Mean and median of the total number of steps taken per day is produced by this code:
@@ -73,12 +73,13 @@ ggplot(bd3, aes(x=interval, y=mean_steps_interval)) + geom_line() +
         ggtitle("Average number of steps taken per 5-minute interval") +
         ylab("Average number of steps") + xlab("5-minute interval")
 
-hig_num_steps<- bd3[which.max(bd3$mean_steps_interval),] #This code
-#produce the follow answer
+hig_num_steps<- bd3[which.max(bd3$mean_steps_interval),] #hig_num_steps object contains the following answer
         
 ```
 
-`r hig_num_steps[1]` is 5-minute interval with the maximum average numbers of steps, it's iqual to  **`r hig_num_steps[2]`**.
+![TimeSerie1](figures/plot2.jpg)
+
+**835** is 5-minute interval with the maximum average numbers of steps, it's iqual to  **206.1698** steps.
 
 
 ## Imputing missing values
