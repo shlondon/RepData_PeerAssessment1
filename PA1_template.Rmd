@@ -17,7 +17,7 @@ bd$date <- as.Date(bd$date)
 ```
 
 You need to load the following packages:
-```{r}
+```{r, echo=FALSE}
 library(dplyr)
 library(ggplot2)
 ```
