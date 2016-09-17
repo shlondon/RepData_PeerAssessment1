@@ -199,7 +199,7 @@ The below code makes a panel plot containing a time series plot of the 5-minute 
 
 ```r
 #You need load dplyr and ggplot2 packages
-bd8 <- group_by(bd7, interval, week) %>% summarize(mean_steps_interval = mean(steps, na.rm = TRUE))
+bd8 <-  group_by(bd7, interval, week) %>% summarize(mean_steps_interval = mean(steps, na.rm = TRUE))
 plot4 <- ggplot(bd8, aes(x=interval, y=mean_steps_interval)) + geom_line() +
         facet_grid(week ~ .) +
         ggtitle("Average number of steps taken per 5-minute interval and per week") +
