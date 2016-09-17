@@ -50,6 +50,8 @@ and the histogram is
 
 histograma1
 
+Hola
+
 
 
 ## What is the average daily activity pattern?
